@@ -1,1 +1,10 @@
-
+spring:
+  h2:
+    console.enabled: true
+  datasource:
+    url: jdbc:h2:mem:mydb
+    username: ENC(EpbeFwdN6nzNd4KUDL55uD3LruFYcld0B30ZGRhXw2I5UptU8c7I08yWkZ8I798v)
+    password: ENC(184PVYnugaKo2saR406MmW330C9jnffQC4zNcZpYBI9UXK2nw/YNCh2hOCIhb+L7)
+    driverClassName: org.h2.Driver
+  jpa:
+    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
