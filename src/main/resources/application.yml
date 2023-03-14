@@ -8,3 +8,6 @@ spring:
     driverClassName: org.h2.Driver
   jpa:
     spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+api:
+  key: ccd23fee2183459134b75a19fc5cc54b
+  url: http://api.openweathermap.org/data/2.5/weather?q={city}&APPID={appid}
