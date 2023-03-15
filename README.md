@@ -1,22 +1,22 @@
-Spring Boot Coding Dojo
+Weather service
 ---
-
-Welcome to the Spring Boot Coding Dojo!
 
 ### Introduction
 
-This is a simple application that requests its data from [OpenWeather](https://openweathermap.org/) and stores the result in a database. The current implementation has quite a few problems making it a non-production ready product.
+This is a simple application that requests its data from [OpenWeather](https://openweathermap.org/) and stores the result in a database.
 
-### The task
+### Running the application locally
 
-As the new engineer leading this project, your first task is to make it production-grade, feel free to refactor any piece
-necessary to achieve the goal.
+One way to run the application locally is to execute the main method in the com.assignment.spring.Application class from your IDE.
+<br>
+In order to decrypt the database credentials, you will need to edit the run configuration by setting VM options as follows:
+```
+-Djasypt.encryptor.password=coding-dojo
+```
 
-### How to deliver the code
+###Endpoint
+http://localhost:8080/weather
 
-Please send an email containing your solution with a link to a public repository.
+###Sample GET endpoint
 
->**DO NOT create a Pull Request with your solution** 
-
-### Footnote
-It's possible to generate the API key going to the [OpenWeather Sign up](https://openweathermap.org/appid) page.
+http://localhost:8080/weather?city=bucharest

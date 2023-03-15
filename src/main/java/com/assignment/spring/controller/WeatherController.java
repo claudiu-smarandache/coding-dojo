@@ -1,14 +1,19 @@
 package com.assignment.spring.controller;
 
-import com.assignment.spring.model.WeatherEntity;
-import com.assignment.spring.WeatherRepository;
 import com.assignment.spring.api.WeatherResponse;
+import com.assignment.spring.dto.ServiceResponse;
+import com.assignment.spring.dto.WeatherServiceResponse;
+import com.assignment.spring.mapper.WeatherMapper;
+import com.assignment.spring.service.WeatherRestApiService;
+import com.assignment.spring.service.WeatherService;
+import com.assignment.spring.util.ControllerUtils;
+import com.assignment.spring.validator.WeatherInputValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.HttpStatusCodeException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,31 +21,33 @@ import javax.servlet.http.HttpServletRequest;
 public class WeatherController {
 
     @Autowired
-    private RestTemplate restTemplate;
+    private WeatherRestApiService weatherRestApiService;
 
     @Autowired
-    private WeatherRepository weatherRepository;
+    private WeatherService weatherService;
 
-    @Value("${api.key}")
-    private String apiKey;
 
-    @Value("${api.url}")
-    private String apiUrl;
 
     @RequestMapping("/weather")
-    public WeatherEntity weather(HttpServletRequest request) {
+    public ResponseEntity<ServiceResponse> getWeather(HttpServletRequest request) {
+        ServiceResponse serviceResponse = new ServiceResponse();
         String city = request.getParameter("city");
-        String url = apiUrl.replace("{city}", city).replace("{appid}", apiKey);
-        ResponseEntity<WeatherResponse> response = restTemplate.getForEntity(url, WeatherResponse.class);
-        return mapper(response.getBody());
-    }
 
-    private WeatherEntity mapper(WeatherResponse response) {
-        WeatherEntity entity = new WeatherEntity();
-        entity.setCity(response.getName());
-        entity.setCountry(response.getSys().getCountry());
-        entity.setTemperature(response.getMain().getTemp());
-
-        return weatherRepository.save(entity);
+        if(!WeatherInputValidator.cityIsValid(city)){
+            return new ResponseEntity<>(new ServiceResponse("400", "Input parameter 'city' is invalid"), HttpStatus.BAD_REQUEST);
+        }
+        else{
+            try {
+                ResponseEntity<WeatherResponse> weatherApiResponse = weatherRestApiService.getWeather(city);
+                weatherService.saveWeather(weatherApiResponse);
+                return new ResponseEntity<>(ControllerUtils.buildSuccessResponse(weatherApiResponse), HttpStatus.OK);
+            }
+            catch (HttpStatusCodeException exception){
+                return new ResponseEntity<>(new ServiceResponse(String.valueOf(exception.getRawStatusCode()), exception.getStatusText()), exception.getStatusCode());
+            }
+            catch (Exception exception){
+                return new ResponseEntity<>(new ServiceResponse("500", exception.getMessage().substring(0, 100)), HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
     }
 }
