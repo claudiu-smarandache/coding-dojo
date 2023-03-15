@@ -14,10 +14,10 @@ In order to decrypt the database credentials, you will need to edit the run conf
 -Djasypt.encryptor.password=coding-dojo
 ```
 
-###Endpoint
+### Endpoint
 
 http://localhost:8080/weather
 
-###Sample GET endpoint
+### Sample GET endpoint
 
 http://localhost:8080/weather?city=bucharest
