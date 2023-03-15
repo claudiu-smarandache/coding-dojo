@@ -15,6 +15,7 @@ In order to decrypt the database credentials, you will need to edit the run conf
 ```
 
 ###Endpoint
+
 http://localhost:8080/weather
 
 ###Sample GET endpoint
