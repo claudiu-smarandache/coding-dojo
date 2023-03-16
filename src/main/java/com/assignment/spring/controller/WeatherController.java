@@ -2,8 +2,6 @@ package com.assignment.spring.controller;
 
 import com.assignment.spring.api.WeatherResponse;
 import com.assignment.spring.dto.ServiceResponse;
-import com.assignment.spring.dto.WeatherServiceResponse;
-import com.assignment.spring.mapper.WeatherMapper;
 import com.assignment.spring.service.WeatherRestApiService;
 import com.assignment.spring.service.WeatherService;
 import com.assignment.spring.util.ControllerUtils;
